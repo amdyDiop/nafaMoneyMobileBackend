@@ -1,14 +1,48 @@
 <?php
 
 namespace App\Entity;
-
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AgencesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AgencesRepository::class)
+ * @ApiResource(
+ *     attributes={"pagination_partial"=true,"pagination_client_items_per_page"=true},
+ *     routePrefix="/admin",
+ *     collectionOperations={
+ *       "post"=
+ *       {
+ *          "method"="post",
+ *          "path"="/agences",
+ *          "attributes"={"security"="is_granted('ROLE_Admin' or 'ROLE_Admin_Agence')",
+ *          "security_message"="Vous n'avez pas access à cette Ressource"},
+ *            "denormalization_context"={"groups"={"add:agence"}},
+ *       },
+ *       "get"=
+ *       {
+ *          "method"= "get",
+ *          "path"="/agences",
+ *          "normalization_context"={"groups"={"agence:all"}},
+ *       },
+ *     },
+ *     itemOperations={
+ *           "get"=
+ *              {
+ *               "method"= "get",
+ *               "path"="/agence/{id}",
+ *               "normalization_context"={"groups"={"agence:all"}},
+ *              },
+ *          "put"=
+ *              {
+ *               "method"= "put",
+ *               "path"="/agence/{id}",
+ *             },
+ *     }
+ * )
  */
 class Agences
 {
@@ -16,51 +50,69 @@ class Agences
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ({"agence:all","compte"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=14)
+     * @Groups({"add:agence","agence:all","add:compte","compte"})
      */
     private $telephone;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"add:agence","add:agence","agence:all","add:compte","compte"})
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"add:agence","agence:all","compte"})
      */
     private $latitude;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"add:agence","agence:all","compte"})
      */
+
     private $longitude;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups ({"agence:all","compte"})
      */
+
     private $createdAt;
 
     /**
      * @ORM\OneToOne(targetEntity=Comptes::class, mappedBy="Agence", cascade={"persist", "remove"})
+     * @Groups({"agence:all"})
      */
     private $comptes;
 
     /**
+
      * @ORM\OneToOne(targetEntity=AdminAgence::class, inversedBy="agences", cascade={"persist", "remove"})
+     * @Groups ({"agence:all","compte"})
      */
     private $adminAgence;
 
     /**
      * @ORM\OneToMany(targetEntity=UserAgence::class, mappedBy="agences")
+     * @Groups({"agence:all","compte"})
      */
     private $userAgence;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $archiver=0;
+
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->userAgence = new ArrayCollection();
     }
 
@@ -128,7 +180,6 @@ class Agences
 
         return $this;
     }
-
     public function getComptes(): ?Comptes
     {
         return $this->comptes;
@@ -184,6 +235,17 @@ class Agences
                 $userAgence->setAgences(null);
             }
         }
+        return $this;
+    }
+
+    public function getArchiver(): ?bool
+    {
+        return $this->archiver;
+    }
+
+    public function setArchiver(bool $archiver): self
+    {
+        $this->archiver = $archiver;
 
         return $this;
     }

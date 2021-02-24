@@ -10,22 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class UserAgence extends User
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Agences::class, inversedBy="userAgence")
      */
     private $agences;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getAgences(): ?Agences
     {

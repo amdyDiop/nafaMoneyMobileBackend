@@ -2,34 +2,53 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity (fields={"email"},message=" le libelle du referentiel doit etre unique" )
  * @ORM\Table(name="`user`")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({"caissier"="Caissier", "adminAgence"="AdminAgence","adminSysteme"="AdminSysteme", "userAgence"="UserAgence"})
+ * @ApiResource (
+ *     routePrefix="/admin",
+ *     normalizationContext={"groups"={"user:read"}},
+ *      collectionOperations={
+ *         "get"=
+ *             {
+ *               "method"="get",
+ *               "path"="/users",
+ *               "normalization_context"={"groups"={"read"}},
+ *              },
  *
+ *      }
+ * )
  */
- abstract class User implements UserInterface
+abstract class User implements UserInterface
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"user:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"user:read"})
      */
     private $roles = [];
 
@@ -41,6 +60,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user:read"})
      */
     private $prenom;
 
@@ -57,13 +77,28 @@ use Symfony\Component\Security\Core\User\UserInterface;
     /**
      * @ORM\Column(type="boolean")
      */
-    private $status;
+    private $status = false;
+
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $archiver = false;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $genre;
 
     /**
      * @ORM\ManyToOne(targetEntity=Profil::class, inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $profil;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $adresse;
 
     public function getId(): ?int
     {
@@ -89,7 +124,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -115,7 +150,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self
@@ -193,14 +228,50 @@ use Symfony\Component\Security\Core\User\UserInterface;
         return $this;
     }
 
+    public function getArchiver(): ?bool
+    {
+        return $this->archiver;
+    }
+
+    public function setArchiver(bool $archiver): self
+    {
+        $this->archiver = $archiver;
+
+        return $this;
+    }
+
+    public function getGenre(): ?string
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(string $genre): self
+    {
+        $this->genre = $genre;
+
+        return $this;
+    }
+
     public function getProfil(): ?Profil
     {
         return $this->profil;
     }
 
-    public function setProfil(?Profil $role): self
+    public function setProfil(?Profil $profil): self
     {
-        $this->profil = $role;
+        $this->profil = $profil;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }

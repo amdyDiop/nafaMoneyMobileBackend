@@ -12,12 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AdminSysteme extends User
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+
 
     /**
      * @ORM\OneToMany(targetEntity=Comptes::class, mappedBy="adminSysteme")
@@ -29,10 +24,6 @@ class AdminSysteme extends User
         $this->comptes = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     /**
      * @return Collection|Comptes[]

@@ -12,12 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Caissier extends User
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+
 
     /**
      * @ORM\OneToMany(targetEntity=Depot::class, mappedBy="caissier")
@@ -34,10 +29,7 @@ class Caissier extends User
         $this->depots = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+
 
     /**
      * @return Collection|Depot[]

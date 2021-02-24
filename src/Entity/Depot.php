@@ -31,6 +31,7 @@ class Depot
      */
     private $compte;
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,7 +45,6 @@ class Depot
     public function setCaissier(?Caissier $caissier): self
     {
         $this->caissier = $caissier;
-
         return $this;
     }
 

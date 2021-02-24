@@ -24,19 +24,22 @@ class Profil
      */
     private $libelle;
 
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private $code;
+
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="role")
+     * @ORM\Column(type="boolean")
+     */
+    private $archiver;
+
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="profil")
      */
     private $users;
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->setArchiver(false);
     }
 
     public function getId(): ?int
@@ -56,14 +59,14 @@ class Profil
         return $this;
     }
 
-    public function getCode(): ?string
+    public function getArchiver(): ?bool
     {
-        return $this->code;
+        return $this->archiver;
     }
 
-    public function setCode(string $code): self
+    public function setArchiver(bool $archiver): self
     {
-        $this->code = $code;
+        $this->archiver = $archiver;
 
         return $this;
     }
@@ -80,7 +83,7 @@ class Profil
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
-            $user->setRole($this);
+            $user->setProfil($this);
         }
 
         return $this;
@@ -90,8 +93,8 @@ class Profil
     {
         if ($this->users->removeElement($user)) {
             // set the owning side to null (unless already changed)
-            if ($user->getRole() === $this) {
-                $user->setRole(null);
+            if ($user->getProfil() === $this) {
+                $user->setProfil(null);
             }
         }
 

@@ -10,22 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AdminAgence extends User
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
 
     /**
      * @ORM\OneToOne(targetEntity=Agences::class, mappedBy="adminAgence", cascade={"persist", "remove"})
      */
     private $agences;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getAgences(): ?Agences
     {

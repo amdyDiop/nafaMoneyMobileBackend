@@ -1,0 +1,5 @@
+lexik_jwt_authentication:
+    secret_key:       '%kernel.project_dir%/config/jwt/private.pem' # required for token creation
+    public_key:       '%kernel.project_dir%/config/jwt/public.pem'  # required for token verification
+    pass_phrase:      'f7d3427d41fee287701729c83eb3ff5f' # required for token creation, usage of an environment variable is recommended
+    token_ttl:        36000
