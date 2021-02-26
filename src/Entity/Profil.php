@@ -73,12 +73,12 @@ class Profil
 
     /**
      * @return Collection|User[]
-     */
+
     public function getUsers(): Collection
     {
         return $this->users;
     }
-
+     */
     public function addUser(User $user): self
     {
         if (!$this->users->contains($user)) {

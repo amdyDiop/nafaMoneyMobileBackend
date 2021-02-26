@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AdminSystemeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +10,37 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=AdminSystemeRepository::class)
+ * * @ApiResource(
+ *     attributes={"pagination_partial"=true,"pagination_client_items_per_page"=true},
+ *     collectionOperations={
+ *       "post"=
+ *       {
+ *          "method"="post",
+ *          "path"="/admins",
+ *          "attributes"={"security"="is_granted('ROLE_Admin')",
+ *          "security_message"="Vous n'avez pas access à cette Ressource"},
+ *          "denormalization_context"={"groups"={"admin:add"}},
+ *       },
+ *       "get"=
+ *       {
+ *          "method"= "get",
+ *          "path"="admins/systeme",
+ *          "attributes"={"security"="is_granted('ROLE_Admin')",
+ *          "security_message"="Vous n'avez pas access à cette Ressource"},
+ *       },
+ *     },
+ *     itemOperations={
+ *          "get"=
+ *              {
+ *                "methode"="get",
+ *                "path"="admin/depot/{id}",
+ *                "security"="is_granted('ROLE_Admin')",
+ *                "security_message"="Vous n'avez pas access à cette Ressource",
+ *                 "normalization_context"={"groups"={"depot:liste"}},
+ *                },
+ *
+ *      },
+ * )
  */
 class AdminSysteme extends User
 {

@@ -38,21 +38,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *                "security_message"="Vous n'avez pas access à cette Ressource",
  *                 "normalization_context"={"groups"={"depot:liste"}},
  *                },
- *              "put"=
- *              {
- *                "methode"="put",
- *                "path"="admin/caissier/{id}",
- *                "security"="is_granted('ROLE_Admin')",
- *                "security_message"="Vous n'avez pas access à cette Ressource",
- *                "denormalization_context"={"groups"={"edit:caissier"}},
- *                },
- *             "delete"=
- *               {
- *                "methode"="delete",
- *                "path"="admin/caissier/{id}",
- *                "security"="is_granted('ROLE_Admin')",
- *                "security_message"="Vous n'avez pas access à cette Ressource",
- *                },
+ *
  *      },
  * )
  */

@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity (fields={"email"},message=" le libelle du referentiel doit etre unique" )
+ * @UniqueEntity (fields={"email"},message=" l'email existe déjà doit etre unique" )
  * @ORM\Table(name="`user`")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="type", type="string")
@@ -42,7 +42,7 @@ abstract class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user:read","caissier:liste","caissier","edit:caissier","depot:liste"})
+     * @Groups({"user:read","caissier:liste","caissier","edit:caissier","depot:liste","admin:add"})
      */
     private $email;
 
@@ -60,19 +60,19 @@ abstract class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read","caissier:liste","caissier","edit:caissier","depot:liste"})
+     * @Groups({"user:read","caissier:liste","caissier","edit:caissier","depot:liste","admin:add"})
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste"})
+     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste","admin:add"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=10)
-     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste"})
+     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste","admin:add"})
      */
     private $telephone;
 
@@ -84,7 +84,7 @@ abstract class User implements UserInterface
     private $archiver = false;
     /**
      * @ORM\Column(type="string", length=10)
-     * @Groups({"caissier:liste","caissier"})
+     * @Groups({"caissier:liste","caissier","admin:add"})
      */
     private $genre;
 
@@ -95,7 +95,7 @@ abstract class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste"})
+     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste","admin:add"})
      */
     private $adresse;
 
