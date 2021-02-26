@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\DepotRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -25,9 +23,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *       "get"=
  *       {
  *          "method"= "get",
- *          "path"="admin/caissiers",
- *          "normalization_context"={"groups"={"caissier:liste"}},
- *      "attributes"={"security"="is_granted('ROLE_Admin')",
+ *          "path"="admin/depots",
+ *          "normalization_context"={"groups"={"depot:liste"}},
+ *          "attributes"={"security"="is_granted('ROLE_Admin')",
  *          "security_message"="Vous n'avez pas access à cette Ressource"},
  *       },
  *     },
@@ -35,10 +33,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          "get"=
  *              {
  *                "methode"="get",
- *                "path"="caissier/{id}",
- *                "security"="is_granted('ROLE_Admin') or object.getId() == user.id",
+ *                "path"="admin/depot/{id}",
+ *                "security"="is_granted('ROLE_Admin')",
  *                "security_message"="Vous n'avez pas access à cette Ressource",
- *                 "normalization_context"={"groups"={"caissier"}},
+ *                 "normalization_context"={"groups"={"depot:liste"}},
  *                },
  *              "put"=
  *              {
@@ -64,35 +62,40 @@ class Depot
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"caissier:liste"})
+     * @Groups({"caissier:liste","depot:liste"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Caissier::class, inversedBy="depots")
      * @ORM\JoinColumn(nullable=true)
+     * @Groups({"depot:liste"})
      */
     private $caissier;
 
     /**
      * @ORM\ManyToOne(targetEntity=Comptes::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"depot:liste"})
      *
      */
     private $compte;
 
     /**
      * @ORM\ManyToOne(targetEntity=AdminSysteme::class, inversedBy="depots")
+     * @Groups({"depot:liste"})
      */
     private $adminSysteme;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"depot:liste"})
      */
     private $createdAt;
     /**
      * @ORM\Column(type="integer")
      * @Groups({"depot:add"})
+     * @Groups({"depot:liste"})
      */
     private $montant;
 

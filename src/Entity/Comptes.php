@@ -61,12 +61,12 @@ class Comptes
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups ({"compte" ,"caissier:liste"})
+     * @Groups ({"compte" ,"caissier:liste","depot:liste"})
      */
     private $id;
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups ({"compte","add:compte","caissier:liste"})
+     * @Groups ({"compte","add:compte","caissier:liste","depot:liste"})
      */
     private $numero;
 

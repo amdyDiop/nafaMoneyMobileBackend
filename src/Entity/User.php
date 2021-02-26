@@ -36,13 +36,13 @@ abstract class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"read","caissier:liste","caissier"})
+     * @Groups({"read","caissier:liste","caissier","depot:liste"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user:read","caissier:liste","caissier","edit:caissier"})
+     * @Groups({"user:read","caissier:liste","caissier","edit:caissier","depot:liste"})
      */
     private $email;
 
@@ -60,19 +60,19 @@ abstract class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read","caissier:liste","caissier","edit:caissier"})
+     * @Groups({"user:read","caissier:liste","caissier","edit:caissier","depot:liste"})
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"caissier:liste","caissier","edit:caissier"})
+     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=10)
-     * @Groups({"caissier:liste","caissier","edit:caissier"})
+     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste"})
      */
     private $telephone;
 
@@ -95,7 +95,7 @@ abstract class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"caissier:liste","caissier","edit:caissier"})
+     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste"})
      */
     private $adresse;
 
