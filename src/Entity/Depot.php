@@ -6,6 +6,7 @@ use App\Repository\DepotRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=DepotRepository::class)
@@ -16,6 +17,7 @@ class Depot
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"caissier:liste"})
      */
     private $id;
 
@@ -28,8 +30,14 @@ class Depot
     /**
      * @ORM\ManyToOne(targetEntity=Comptes::class)
      * @ORM\JoinColumn(nullable=false)
+     *
      */
     private $compte;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=AdminSysteme::class, inversedBy="depots")
+     */
+    private $adminSysteme;
 
 
     public function getId(): ?int
@@ -56,6 +64,18 @@ class Depot
     public function setCompte(?Comptes $compte): self
     {
         $this->compte = $compte;
+
+        return $this;
+    }
+
+    public function getAdminSysteme(): ?AdminSysteme
+    {
+        return $this->adminSysteme;
+    }
+
+    public function setAdminSysteme(?AdminSysteme $adminSysteme): self
+    {
+        $this->adminSysteme = $adminSysteme;
 
         return $this;
     }

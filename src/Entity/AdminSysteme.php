@@ -19,9 +19,15 @@ class AdminSysteme extends User
      */
     private $comptes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Depot::class, mappedBy="adminSysteme")
+     */
+    private $depots;
+
     public function __construct()
     {
         $this->comptes = new ArrayCollection();
+        $this->depots = new ArrayCollection();
     }
 
 
@@ -49,6 +55,36 @@ class AdminSysteme extends User
             // set the owning side to null (unless already changed)
             if ($compte->getAdminSysteme() === $this) {
                 $compte->setAdminSysteme(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Depot[]
+     */
+    public function getDepots(): Collection
+    {
+        return $this->depots;
+    }
+
+    public function addDepot(Depot $depot): self
+    {
+        if (!$this->depots->contains($depot)) {
+            $this->depots[] = $depot;
+            $depot->setAdminSysteme($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepot(Depot $depot): self
+    {
+        if ($this->depots->removeElement($depot)) {
+            // set the owning side to null (unless already changed)
+            if ($depot->getAdminSysteme() === $this) {
+                $depot->setAdminSysteme(null);
             }
         }
 

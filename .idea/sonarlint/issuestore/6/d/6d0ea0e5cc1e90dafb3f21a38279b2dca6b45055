@@ -1,0 +1,4 @@
+
+zphp:S115"aRename this constant "Profil_User" to match the regular expression ^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$.(ХщВаыяяяя
+@	php:S1481"+Remove this unused "$faker" local variable.(ыцњ†
+8php:S125"Remove this commented out code.(ЮЩ™­ьяяяя

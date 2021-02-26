@@ -50,40 +50,39 @@ class Agences
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups ({"agence:all","compte"})
+     * @Groups ({"agence:all","compte","caissier:liste"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=14)
-     * @Groups({"add:agence","agence:all","add:compte","compte"})
+     * @Groups({"add:agence","agence:all","add:compte","compte","caissier:liste"})
      */
     private $telephone;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"add:agence","add:agence","agence:all","add:compte","compte"})
+     * @Groups({"add:agence","add:agence","agence:all","add:compte","compte","caissier:liste"})
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"add:agence","agence:all","compte"})
+     * @Groups({"add:agence","agence:all","compte","caissier:liste"})
      */
     private $latitude;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"add:agence","agence:all","compte"})
+     * @Groups({"add:agence","agence:all","compte","caissier:liste"})
      */
 
     private $longitude;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups ({"agence:all","compte"})
+     * @Groups ({"agence:all","compte","caissier:liste"})
      */
-
     private $createdAt;
 
     /**
@@ -115,17 +114,14 @@ class Agences
         $this->createdAt = new \DateTime();
         $this->userAgence = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function getTelephone(): ?string
     {
         return $this->telephone;
     }
-
     public function setTelephone(string $telephone): self
     {
         $this->telephone = $telephone;

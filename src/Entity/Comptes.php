@@ -61,13 +61,12 @@ class Comptes
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups ({"compte"})
+     * @Groups ({"compte" ,"caissier:liste"})
      */
     private $id;
-
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups ({"compte","add:compte"})
+     * @Groups ({"compte","add:compte","caissier:liste"})
      */
     private $numero;
 
@@ -85,20 +84,20 @@ class Comptes
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups ({"compte","compte:edit"})
+     * @Groups ({"compte","compte:edit","caissier:liste"})
      */
     private $statut = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity=AdminSysteme::class, inversedBy="comptes")
-     * @Groups ({"compte","add:compte","compte:edit"})
+     * @Groups ({"compte","add:compte"})
      */
 
     private $adminSysteme;
     /**
      * @ORM\OneToOne(targetEntity=Agences::class, inversedBy="comptes", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups ({"compte","add:compte","compte:edit"})
+     * @Groups ({"compte","add:compte"})
      */
     private $Agence;
 
@@ -106,8 +105,6 @@ class Comptes
      * @ORM\Column(type="boolean")
      */
     private $archiver= 0;
-
-
     public function __construct()
     {
         $this->createdAt = new  \DateTime();

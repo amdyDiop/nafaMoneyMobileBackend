@@ -36,19 +36,19 @@ abstract class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"read"})
+     * @Groups({"read","caissier:liste","caissier"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user:read"})
+     * @Groups({"user:read","caissier:liste","caissier","edit:caissier"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"user:read"})
+     * @Groups({"user:read","caissier"})
      */
     private $roles = [];
 
@@ -60,33 +60,31 @@ abstract class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read"})
+     * @Groups({"user:read","caissier:liste","caissier","edit:caissier"})
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"caissier:liste","caissier","edit:caissier"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Groups({"caissier:liste","caissier","edit:caissier"})
      */
     private $telephone;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $status = false;
-
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"caissier","edit:caissier"})
      */
     private $archiver = false;
-
     /**
      * @ORM\Column(type="string", length=10)
+     * @Groups({"caissier:liste","caissier"})
      */
     private $genre;
 
@@ -97,6 +95,7 @@ abstract class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"caissier:liste","caissier","edit:caissier"})
      */
     private $adresse;
 
@@ -212,18 +211,6 @@ abstract class User implements UserInterface
     public function setTelephone(string $telephone): self
     {
         $this->telephone = $telephone;
-
-        return $this;
-    }
-
-    public function getStatus(): ?bool
-    {
-        return $this->status;
-    }
-
-    public function setStatus(bool $status): self
-    {
-        $this->status = $status;
 
         return $this;
     }

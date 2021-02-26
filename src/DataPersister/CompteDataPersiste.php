@@ -9,21 +9,27 @@ use App\Entity\Comptes;
 use App\Entity\Profil;
 use App\Entity\User;
 use App\Repository\AgencesRepository;
+use App\Repository\ComptesRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Security;
 
 class CompteDataPersiste implements DataPersisterInterface
 {
 
     private $manager;
     private $agenceRep;
+    private $compteRep;
+    private $securrity;
 
-    public function __construct(AgencesRepository $agenceRep, EntityManagerInterface $manager)
+    public function __construct(Security $security,AgencesRepository $agenceRep,ComptesRepository  $compteRep, EntityManagerInterface $manager)
     {
         $this->manager = $manager;
+        $this->securrity = $security;
         $this->agenceRep = $agenceRep;
+        $this->compteRep = $compteRep;
     }
 
     public function supports($data): bool
@@ -33,10 +39,13 @@ class CompteDataPersiste implements DataPersisterInterface
 
     public function persist($data)
     {
+        if ($data->getId() == null){
+            $user = $this->securrity->getUser();
+            $data->setAdminSysteme($user);
+        }
         $this->manager->persist($data);
         $this->manager->flush();
     }
-
     public function remove($data)
     {
         $data->setArchiver(true);
