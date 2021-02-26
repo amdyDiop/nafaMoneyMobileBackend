@@ -42,7 +42,8 @@ abstract class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user:read","caissier:liste","caissier","edit:caissier","depot:liste","admin:add"})
+     * @Groups({"user:read","caissier:liste","caissier","edit:caissier","depot:liste",
+     *     "admin:add","adminAg:add"})
      */
     private $email;
 
@@ -60,19 +61,22 @@ abstract class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read","caissier:liste","caissier","edit:caissier","depot:liste","admin:add"})
+     * @Groups({"user:read","caissier:liste","caissier","edit:caissier","depot:liste",
+     *     "admin:add","adminAg:add"})
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste","admin:add"})
+     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste",
+     *     "admin:add","adminAg:add"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=10)
-     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste","admin:add"})
+     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste","admin:add"
+     * ,"adminAg:add"})
      */
     private $telephone;
 
@@ -84,7 +88,7 @@ abstract class User implements UserInterface
     private $archiver = false;
     /**
      * @ORM\Column(type="string", length=10)
-     * @Groups({"caissier:liste","caissier","admin:add"})
+     * @Groups({"caissier:liste","caissier","admin:add","adminAg:add"})
      */
     private $genre;
 
@@ -95,7 +99,8 @@ abstract class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste","admin:add"})
+     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste",
+     *     "admin:add","adminAg:add"})
      */
     private $adresse;
 

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=AdminSystemeRepository::class)
- * * @ApiResource(
+ *  @ApiResource(
  *     attributes={"pagination_partial"=true,"pagination_client_items_per_page"=true},
  *     collectionOperations={
  *       "post"=
@@ -24,7 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
  *       "get"=
  *       {
  *          "method"= "get",
- *          "path"="admins/systeme",
+ *          "path"="/admins/systeme",
  *          "attributes"={"security"="is_granted('ROLE_Admin')",
  *          "security_message"="Vous n'avez pas access à cette Ressource"},
  *       },
@@ -33,10 +33,9 @@ use Doctrine\ORM\Mapping as ORM;
  *          "get"=
  *              {
  *                "methode"="get",
- *                "path"="admin/depot/{id}",
+ *                "path"="admin/systeme/{id}",
  *                "security"="is_granted('ROLE_Admin')",
  *                "security_message"="Vous n'avez pas access à cette Ressource",
- *                 "normalization_context"={"groups"={"depot:liste"}},
  *                },
  *
  *      },
