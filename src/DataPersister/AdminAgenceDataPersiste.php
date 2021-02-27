@@ -46,7 +46,7 @@ class AdminAgenceDataPersiste implements DataPersisterInterface
         $data->setProfil($profil[0]);
         $this->manager->persist($data);
         $this->manager->flush();
-        return new JsonResponse("l'adnimistrateur de  l'agence a été crée",Response::HTTP_CREATED,[]);
+        return new JsonResponse("l'administrateur de  l'agence a été crée",Response::HTTP_CREATED,[]);
     }
     public function remove($data)
     {

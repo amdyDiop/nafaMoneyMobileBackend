@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          "method"= "get",
  *          "path"="admin/caissiers",
  *          "normalization_context"={"groups"={"caissier:liste"}},
- *      "attributes"={"security"="is_granted('ROLE_Admin')",
+ *          "attributes"={"security"="is_granted('ROLE_Admin')",
  *          "security_message"="Vous n'avez pas access à cette Ressource"},
  *       },
  *     },

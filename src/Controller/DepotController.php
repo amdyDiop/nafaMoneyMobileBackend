@@ -30,10 +30,8 @@ class DepotController extends AbstractController
         $this->adminSystemeRep = $adminSystemeRep;
         $this->manager = $manager;
     }
-
     /**
-     * @Route(path={"/api/depots/compte/{id}"},methods={"POST"},
-     * )
+     * @Route(path={"/api/depots/compte/{id}"},methods={"POST"})
      */
     public function depot(int $id ,Request  $request): Response
     {
