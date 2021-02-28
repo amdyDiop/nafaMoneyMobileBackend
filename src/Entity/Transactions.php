@@ -2,33 +2,64 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TransactionsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TransactionsRepository::class)
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({"transactionsComplete"="TransactionsComplete", "transactionsEnCours"="TransactionsEnCours"})
+ *
+ * @ApiResource(
+ *     attributes={"pagination_partial"=true,"pagination_client_items_per_page"=true},
+ *     collectionOperations={
+ *       "post"=
+ *       {
+ *          "method"="post",
+ *          "path"="/user-agence/transaction/depots",
+ *           "denormalization_context"={"groups"={"trans:add"}},
+ *       },
+ *     },
+ *     itemOperations={
+ *      "transaction_by_code"=
+ *        {
+ *          "method"= "get",
+ *          "path"="/user-agence/transaction/code",
+ *          "security"="is_granted('ROLE_Admin') or is_granted('ROLE_UserAgence')is_granted('ROLE_AdminAgence')",
+ *          "security_message"="Vous n'avez pas access à cette Ressource",
+ *        },
+ *     }
+ *
+ * )
  */
-class Transactions
+abstract class Transactions
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"transaction"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"trans:add","transaction"})
      */
     private $montant;
 
     /**
      * @ORM\Column(type="datetime")
+     *  @Groups({"transaction"})
      */
     private $date_trans;
 
     /**
      * @ORM\Column(type="integer")
+     *  @Groups({"transaction"})
      */
     private $frais;
 
@@ -39,11 +70,13 @@ class Transactions
 
     /**
      * @ORM\Column(type="integer")
+     *  @Groups({"transaction"})
      */
     private $frais_depot;
 
     /**
      * @ORM\Column(type="integer")
+     *  @Groups({"transaction"})
      */
     private $frais_retrait;
 
@@ -53,14 +86,47 @@ class Transactions
     private $frais_systeme;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TransactionsEnCours::class)
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"trans:add","transaction"})
      */
-    private $enCours;
+    private $nomCompleteDestination;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TransactionsComplete::class)
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"trans:add","transaction"})
      */
-    private $complete;
+    private $cniDestination;
+
+    /**
+     * @ORM\Column(type="string", length=14)
+     * @Groups({"trans:add","transaction"})
+     */
+    private $telephoneDestination;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Agences::class, inversedBy="transactions")
+     * @Groups({"transaction"})
+     */
+    private $agenceDepot;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Agences::class, inversedBy="transactions")
+     * @Groups({"transaction"})
+     */
+    private $agenceRetrait;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"transaction"})
+     */
+    private $code;
+
+
+
+    public function __construct()
+    {
+        $this->date_trans = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -78,7 +144,6 @@ class Transactions
 
         return $this;
     }
-
     public function getDateTrans(): ?\DateTimeInterface
     {
         return $this->date_trans;
@@ -151,27 +216,80 @@ class Transactions
         return $this;
     }
 
-    public function getEnCours(): ?TransactionsEnCours
+
+
+
+    public function getNomCompleteDestination(): ?string
     {
-        return $this->enCours;
+        return $this->nomCompleteDestination;
     }
 
-    public function setEnCours(?TransactionsEnCours $enCours): self
+    public function setNomCompleteDestination(string $nomCompleteDestination): self
     {
-        $this->enCours = $enCours;
+        $this->nomCompleteDestination = $nomCompleteDestination;
 
         return $this;
     }
 
-    public function getComplete(): ?TransactionsComplete
+    public function getCniDestination(): ?string
     {
-        return $this->complete;
+        return $this->cniDestination;
     }
 
-    public function setComplete(?TransactionsComplete $complete): self
+    public function setCniDestination(string $cniDestination): self
     {
-        $this->complete = $complete;
+        $this->cniDestination = $cniDestination;
 
         return $this;
     }
+
+    public function getTelephoneDestination(): ?string
+    {
+        return $this->telephoneDestination;
+    }
+
+    public function setTelephoneDestination(string $telephoneDestination): self
+    {
+        $this->telephoneDestination = $telephoneDestination;
+
+        return $this;
+    }
+
+    public function getAgenceDepot(): ?Agences
+    {
+        return $this->agenceDepot;
+    }
+
+    public function setAgenceDepot(?Agences $agenceDepot): self
+    {
+        $this->agenceDepot = $agenceDepot;
+
+        return $this;
+    }
+
+    public function getAgenceRetrait(): ?Agences
+    {
+        return $this->agenceRetrait;
+    }
+
+    public function setAgenceRetrait(?Agences $agenceRetrait): self
+    {
+        $this->agenceRetrait = $agenceRetrait;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+
 }

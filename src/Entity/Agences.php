@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AgencesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -50,31 +51,31 @@ class Agences
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups ({"agence:all","compte","caissier:liste"})
+     * @Groups ({"agence:all","compte","caissier:liste","transaction"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=14)
-     * @Groups({"add:agence","agence:all","add:compte","compte","caissier:liste"})
+     * @Groups({"add:agence","agence:all","add:compte","compte","caissier:liste","transaction"})
      */
     private $telephone;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"add:agence","add:agence","agence:all","add:compte","compte","caissier:liste"})
+     * @Groups({"add:agence","transaction","add:agence","agence:all","add:compte","compte","caissier:liste"})
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"add:agence","agence:all","compte","caissier:liste"})
+     * @Groups({"add:agence","agence:all","compte","caissier:liste","transaction"})
      */
     private $latitude;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"add:agence","agence:all","compte","caissier:liste"})
+     * @Groups({"add:agence","agence:all","compte","caissier:liste","transaction"})
      */
 
     private $longitude;
@@ -92,7 +93,6 @@ class Agences
     private $comptes;
 
     /**
-
      * @ORM\OneToOne(targetEntity=AdminAgence::class, inversedBy="agences", cascade={"persist", "remove"})
      * @Groups ({"agence:all","compte"})
      */
@@ -107,21 +107,31 @@ class Agences
     /**
      * @ORM\Column(type="boolean")
      */
-    private $archiver=0;
+    private $archiver = 0;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Transactions::class, mappedBy="agenceDepot")
+     */
+    private $transactions;
+
 
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->userAgence = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
     public function getTelephone(): ?string
     {
         return $this->telephone;
     }
+
     public function setTelephone(string $telephone): self
     {
         $this->telephone = $telephone;
@@ -176,6 +186,7 @@ class Agences
 
         return $this;
     }
+
     public function getComptes(): ?Comptes
     {
         return $this->comptes;
@@ -245,4 +256,38 @@ class Agences
 
         return $this;
     }
+
+    /**
+     * @return Collection|Transactions[]
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transactions $transaction): self
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions[] = $transaction;
+            $transaction->setAgenceDepot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaction(Transactions $transaction): self
+    {
+        if ($this->transactions->removeElement($transaction)) {
+            // set the owning side to null (unless already changed)
+            if ($transaction->getAgenceDepot() === $this) {
+                $transaction->setAgenceDepot(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
+
+
+

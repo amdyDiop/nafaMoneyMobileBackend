@@ -31,7 +31,6 @@ class UserAgenceDataPersiste implements DataPersisterInterface
     private $profilRep;
     private $agenceRep;
     private $admsRep;
-
     public function __construct(AdminSystemeRepository $admsRep, Security $security, AgencesRepository $agenceRep, ProfilRepository $profilRep, UserPasswordEncoderInterface $encoder, EntityManagerInterface $manager)
     {
         $this->manager = $manager;

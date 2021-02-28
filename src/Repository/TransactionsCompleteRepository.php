@@ -2,21 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\TransactionsEnComplete;
+use App\Entity\TransactionsComplete;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method TransactionsEnComplete|null find($id, $lockMode = null, $lockVersion = null)
- * @method TransactionsEnComplete|null findOneBy(array $criteria, array $orderBy = null)
- * @method TransactionsEnComplete[]    findAll()
- * @method TransactionsEnComplete[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TransactionsComplete|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TransactionsComplete|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TransactionsComplete[]    findAll()
+ * @method TransactionsComplete[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TransactionsEnCompleteRepository extends ServiceEntityRepository
+class TransactionsCompleteRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TransactionsEnComplete::class);
+        parent::__construct($registry, TransactionsComplete::class);
     }
 
     // /**
