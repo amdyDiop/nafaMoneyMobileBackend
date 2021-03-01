@@ -31,6 +31,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          "security"="is_granted('ROLE_Admin') or is_granted('ROLE_UserAgence')is_granted('ROLE_AdminAgence')",
  *          "security_message"="Vous n'avez pas access à cette Ressource",
  *        },
+ *     "delete"=
+ *        {
+ *          "method"= "delete",
+ *          "path"="/user-agence/transaction/{id}/retrait",
+ *          "security"=" is_granted('ROLE_UserAgence') or is_granted('ROLE_AdminAgence')",
+ *          "security_message"="Vous n'avez pas access à cette Ressource",
+ *        },
  *     }
  *
  * )

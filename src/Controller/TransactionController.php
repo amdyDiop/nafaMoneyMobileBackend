@@ -65,7 +65,7 @@ class TransactionController extends AbstractController
             $manager->persist($transaction);
             $manager->persist($client);
             $manager->flush();
-            return new JsonResponse('vous avez envoyé' . $data['Montant'] . " à " . $data['NomComplet'], Response::HTTP_BAD_REQUEST, [], false);
+            return new JsonResponse('vous avez envoyé' . $data['Montant'] . " à " . $data['NomCompleteDestination'], Response::HTTP_BAD_REQUEST, [], false);
         } else {
             return new JsonResponse('fall li nga yore matoule', Response::HTTP_BAD_REQUEST, [], false);
         }
@@ -95,4 +95,27 @@ class TransactionController extends AbstractController
             }
         }
     }
+
+    /**
+     * @Route(path={"/api/user-agence/transaction/{id}retrait"},methods={"get"})
+     */
+    public function retrait(TransactionsEnCours $transaction, SerializerInterface $serializer, Request $request): Response
+    {
+        dd('sdgbdsg',$transaction);
+        if ($transaction) {
+            $transactionJson = $serializer->serialize($transaction[0], 'json', ["groups" => "transaction"]);
+            $transactionJson = json_decode($transactionJson);
+            return new JsonResponse($transactionJson, Response::HTTP_OK, [], false);
+        } else {
+            $transaction = $this->completeRep->findBy(['code' => $code]);
+            if ($transaction) {
+                $transactionJson = $serializer->serialize($transaction[0], 'json', ["groups" => "transaction"]);
+                $transactionJson = json_decode($transactionJson);
+                return new JsonResponse($transactionJson, Response::HTTP_OK, [], false);
+            } else {
+                return new JsonResponse('code invalide', Response::HTTP_OK, [], false);
+            }
+        }
+    }
+
 }

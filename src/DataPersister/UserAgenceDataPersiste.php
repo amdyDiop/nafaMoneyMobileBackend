@@ -24,7 +24,6 @@ use Symfony\Component\Security\Core\Security;
 
 class UserAgenceDataPersiste implements DataPersisterInterface
 {
-
     private $manager;
     private $security;
     private $encoder;
