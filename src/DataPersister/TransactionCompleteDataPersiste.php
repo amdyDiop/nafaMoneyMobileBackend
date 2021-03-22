@@ -20,13 +20,15 @@ use App\Repository\AgencesRepository;
 use App\Repository\ProfilRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PropertyAccess\Exception\AccessException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class TransactionEnCoursDataPersiste implements DataPersisterInterface
+class TransactionCompleteDataPersiste implements DataPersisterInterface
 {
 
     private $manager;
@@ -46,7 +48,7 @@ class TransactionEnCoursDataPersiste implements DataPersisterInterface
 
     public function supports($data): bool
     {
-        return $data instanceof TransactionsEnCours;
+        return $data instanceof TransactionsComplete;
     }
 
     public function persist($data)
@@ -55,31 +57,9 @@ class TransactionEnCoursDataPersiste implements DataPersisterInterface
         $this->manager->flush();
     }
 
-    public function remove($data)
+    public function remove($data):Response
     {
-        $user = $this->security->getUser();
-        $agence = $user->getAgences();
-        $compte = $user->getAgences()->getComptes();
-        $montant = $compte->getSolde() + $data->getMontant() + $data->getFraisRetrait();
-        $compte->setSolde($montant);
-        $transComp = new TransactionsComplete();
-        $transComp->setAgenceRetrait($agence);
-        $transComp->setCode($data->getCode());
-        $transComp->setMontant($data->getMontant());
-        $transComp->setAgenceDepot($data->getAgenceDepot());
-        $transComp->setMontant($data->getMontant());
-        $transComp->setFrais($data->getFrais());
-        $transComp->setFraisEtat($data->getFraisEtat());
-        $transComp->setFraisDepot($data->getFraisDepot());
-        $transComp->setFraisRetrait($data->getFraisRetrait());
-        $transComp->setFraisSysteme($data->getFraisSysteme());
-        $transComp->setNomCompleteDestination($data->getNomCompleteDestination());
-        $transComp->setCniDestination($data->getCniDestination());
-        $transComp->setTelephoneDestination($data->getTelephoneDestination());
-        $this->manager->persist($compte);
-        $this->manager->persist($transComp);
-        $this->manager->remove($data);
-        $this->manager->flush();
-       return new JsonResponse('msdgnkm', Response::HTTP_OK, [], false);
+            $this->manager->flush();
+        throw new AccessException("Ce transaction a été retirée");
     }
 }

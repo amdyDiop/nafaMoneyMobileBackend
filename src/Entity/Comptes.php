@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ComptesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -61,24 +63,24 @@ class Comptes
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups ({"compte" ,"caissier:liste","depot:liste"})
+     * @Groups ({"compte" ,"caissier:liste","depot:liste","agence:by:user"})
      */
     private $id;
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups ({"compte","add:compte","caissier:liste","depot:liste"})
+     * @Groups ({"compte","add:compte","caissier:liste","depot:liste","agence:by:user"})
      */
     private $numero;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups ({"compte","compte:edit"})
+     * @Groups ({"compte","compte:edit","agence:by:user"})
      */
     private $solde = 700000;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups ({"compte"})
+     * @Groups ({"compte","agence:by:user"})
      */
     private $createdAt;
 
@@ -105,11 +107,17 @@ class Comptes
      * @ORM\Column(type="boolean")
      */
     private $archiver= 0;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Transactions::class, mappedBy="compte")
+     */
+    private $transactions;
     public function __construct()
     {
         $this->createdAt = new  \DateTime();
         $number = date('o') . rand(1000, 9999);
         $this->setNumero($number);
+        $this->transactions = new ArrayCollection();
 
     }
 
@@ -197,6 +205,36 @@ class Comptes
     public function setArchiver(bool $archiver): self
     {
         $this->archiver = $archiver;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transactions[]
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transactions $transaction): self
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions[] = $transaction;
+            $transaction->setCompte($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaction(Transactions $transaction): self
+    {
+        if ($this->transactions->removeElement($transaction)) {
+            // set the owning side to null (unless already changed)
+            if ($transaction->getCompte() === $this) {
+                $transaction->setCompte(null);
+            }
+        }
 
         return $this;
     }

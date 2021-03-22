@@ -82,13 +82,13 @@ class Agences
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups ({"agence:all","compte","caissier:liste"})
+     * @Groups ({"agence:all","compte","caissier:liste","agence:by:user"})
      */
     private $createdAt;
 
     /**
      * @ORM\OneToOne(targetEntity=Comptes::class, mappedBy="Agence", cascade={"persist", "remove"})
-     * @Groups({"agence:all"})
+     * @Groups({"agence:all","agence:by:user"})
      */
     private $comptes;
 

@@ -26,7 +26,6 @@ class AdminAgenceDataPersiste implements DataPersisterInterface
     private  $encoder;
     private  $profilRep;
     private  $agenceRep;
-
     public function __construct(AgencesRepository  $agenceRep,ProfilRepository  $profilRep,UserPasswordEncoderInterface $encoder,EntityManagerInterface $manager)
     {
         $this->manager = $manager;

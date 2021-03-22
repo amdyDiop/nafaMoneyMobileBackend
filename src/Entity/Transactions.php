@@ -128,6 +128,11 @@ abstract class Transactions
      */
     private $code;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Comptes::class, inversedBy="transactions")
+     */
+    private $compte;
+
 
 
     public function __construct()
@@ -294,6 +299,18 @@ abstract class Transactions
     public function setCode(string $code): self
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    public function getCompte(): ?Comptes
+    {
+        return $this->compte;
+    }
+
+    public function setCompte(?Comptes $compte): self
+    {
+        $this->compte = $compte;
 
         return $this;
     }

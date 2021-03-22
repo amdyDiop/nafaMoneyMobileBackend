@@ -75,15 +75,14 @@ abstract class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=10)
-     * @Groups({"caissier:liste","caissier","edit:caissier","depot:liste","admin:add"
+     * @Groups({"user:read","caissier:liste","caissier","edit:caissier","depot:liste","admin:add"
      * ,"adminAg:add","add:caissier"})
      */
     private $telephone;
 
-
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"caissier","edit:caissier"})
+     * @Groups({"caissier","edit:caissier","user:read"})
      */
     private $archiver = false;
     /**
@@ -128,7 +127,7 @@ abstract class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string)$this->email;
+        return (string)$this->telephone;
     }
 
     /**

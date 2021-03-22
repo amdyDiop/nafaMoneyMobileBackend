@@ -41,7 +41,7 @@ class TransactionController extends AbstractController
         $agence = $this->getUser()->getAgences();
         $compte = $agence->getComptes();
         $solde = $compte->getSolde();
-        $fraisServices->calculFrais($data['Montant'], $transaction);
+        $fraisServices->makeFrais($data['Montant'], $transaction);
         if ($solde >= ($data['Montant'] + $transaction->getFrais())) {
             foreach ($data as $key => $value) {
                 $set = "set" . $key;
@@ -70,7 +70,6 @@ class TransactionController extends AbstractController
             return new JsonResponse('fall li nga yore matoule', Response::HTTP_BAD_REQUEST, [], false);
         }
         // $transaction = $serializer->deserialize($data,TransactionsEnCours::class,true,['groups'=>'trans:add']);
-
     }
 
     /**
@@ -95,13 +94,12 @@ class TransactionController extends AbstractController
             }
         }
     }
-
     /**
      * @Route(path={"/api/user-agence/transaction/{id}retrait"},methods={"get"})
      */
     public function retrait(TransactionsEnCours $transaction, SerializerInterface $serializer, Request $request): Response
     {
-        dd('sdgbdsg',$transaction);
+        dd('sdgbdsg', $transaction);
         if ($transaction) {
             $transactionJson = $serializer->serialize($transaction[0], 'json', ["groups" => "transaction"]);
             $transactionJson = json_decode($transactionJson);
